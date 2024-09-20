@@ -613,6 +613,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
       Reports: "/Reports/ActivityOverview",
       Leads: "/Leads",
       Contacts: "/Contacts",
+      logout: "/",
     };
 
     if (routes[heading]) {
@@ -874,19 +875,25 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
           </ListItemButton>
         </List>
         <Divider sx={{ backgroundColor: "white", marginTop: 2 }} />
-        <ListItemButton>
-          <ListItemText primary="Collapse" />
-          <ListItemIcon>
-            {" "}
-            <KeyboardTabRoundedIcon
-              sx={{
-                color: "#fff",
-                transform: "scaleX(-1)",
-                marginLeft: "24px",
-              }}
-            />
-          </ListItemIcon>
-        </ListItemButton>
+        <List>
+          {" "}
+          <ListItemButton>
+            <ListItemText primary="Collapse" />
+            <ListItemIcon>
+              {" "}
+              <KeyboardTabRoundedIcon
+                sx={{
+                  color: "#fff",
+                  transform: "scaleX(-1)",
+                  marginLeft: "24px",
+                }}
+              />
+            </ListItemIcon>
+          </ListItemButton>
+          <ListItemButton onClick={() => handleMenuItemClick("logout")}>
+            <ListItemText primary="Logout" />
+          </ListItemButton>
+        </List>
       </Box>
     </Drawer>
   );
