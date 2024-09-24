@@ -5,9 +5,10 @@ import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import WifiTetheringRoundedIcon from "@mui/icons-material/WifiTetheringRounded";
 import UsersComponent from "./Users";
 import GroupsComponent from "./Groups";
+import UserTable from "./Team Management/UserTable";
 const TeamManagementcomp = () => {
   const [selected, setSelected] = useState("users");
-  const usersCount = 0; // Replace with actual data
+  const [usersCount, setUsersCount] = useState(2);
   const groupsCount = 0; // Replace with actual data
 
   const handleSelect = (option: string) => {
@@ -83,7 +84,10 @@ const TeamManagementcomp = () => {
       </Box>
       <Divider sx={{ mt: -2, width: "104.5%", ml: -6 }} />
       <Box sx={{ mt: 2 }}>
-        {selected === "users" && <UsersComponent />}
+        {selected === "users" && usersCount < 1 && <UsersComponent />}
+        {selected === "users" && usersCount > 0 && (
+          <UserTable onUserCountChange={setUsersCount} />
+        )}
         {selected === "groups" && <GroupsComponent />}
       </Box>
     </Box>

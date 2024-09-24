@@ -6,10 +6,12 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useGlobalContext } from "./GlobalVar";
 const drawerWidth = 240;
 
 export default function PermanentDrawerLeft() {
   const navigate = useNavigate();
+  const { collapsed } = useGlobalContext();
 
   // Check the current path to set the initial selected state
   const [selected, setSelected] = useState<string>(location.pathname);
@@ -30,7 +32,7 @@ export default function PermanentDrawerLeft() {
       }}
       PaperProps={{
         sx: {
-          marginLeft: "280px",
+          marginLeft: collapsed ? "70px" : "280px",
           marginTop: "210px",
           zIndex: 2,
           height: "750px",
@@ -40,66 +42,13 @@ export default function PermanentDrawerLeft() {
       variant="permanent"
       anchor="left">
       <Divider />
-      <List sx={{ mt: 2 }}>
-        {["Account", "Memberships"].map((text) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton
-              sx={{
-                "&:hover": {
-                  backgroundColor: "transparent !important",
-                },
-              }}>
-              <ListItemText
-                sx={{
-                  mt: -2.5,
-                  color: "gray",
-                  "& .MuiListItemText-primary": {
-                    color: "inherit",
-                    fontSize: "0.75rem", // Adjusted font size
-                    "&:hover": {
-                      color: "blue",
-                    },
-                  },
-                }}
-                primary={text}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List sx={{ mt: 2 }}>
-        {["Organization"].map((text) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton
-              sx={{
-                "&:hover": {
-                  backgroundColor: "transparent !important",
-                },
-              }}>
-              <ListItemText
-                sx={{
-                  mt: -2.5,
-                  color: "black",
-                  "& .MuiListItemText-primary": {
-                    color: "inherit",
-                    fontSize: "0.75rem", // Adjusted font size
-                    "&:hover": {
-                      color: "blue",
-                    },
-                  },
-                }}
-                primary={text}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <List sx={{ mt: -2 }}>
+      <List
+        sx={{
+          mt: 2,
+        }}>
         {[
-          { text: "General", path: "/General" },
-          { text: "Team Management", path: "/TeamManagement" },
-          { text: "Roles And Permissions", path: "/" },
+          { text: "Accounts", path: "/processing" },
+          { text: "Memberships", path: "/processing" },
         ].map(({ text, path }) => (
           <ListItem key={text} disablePadding>
             <ListItemButton
@@ -131,25 +80,32 @@ export default function PermanentDrawerLeft() {
         ))}
       </List>
       <Divider />
-      <List sx={{ mt: 2 }}>
-        {["Customization"].map((text) => (
+      <List
+        sx={{
+          mt: 2,
+        }}>
+        {[{ text: "Organizations", path: "/General" }].map(({ text, path }) => (
           <ListItem key={text} disablePadding>
             <ListItemButton
+              onClick={() => handleNavigation(text, path)}
               sx={{
                 "&:hover": {
                   backgroundColor: "transparent !important",
+                  color: "blue",
                 },
+                Color: selected === path ? "#e0f7fa" : "transparent", // Change background when selected
               }}>
               <ListItemText
                 sx={{
                   mt: -2.5,
-                  color: "black",
+                  "&:hover": {
+                    backgroundColor: "transparent !important",
+                    color: "blue",
+                  },
+                  color: selected === path ? "black" : "black", // Change color when selected
                   "& .MuiListItemText-primary": {
                     color: "inherit",
                     fontSize: "0.75rem", // Adjusted font size
-                    "&:hover": {
-                      color: "blue",
-                    },
                   },
                 }}
                 primary={text}
@@ -158,14 +114,92 @@ export default function PermanentDrawerLeft() {
           </ListItem>
         ))}
       </List>
-      <List sx={{ mt: -2 }}>
+      <List
+        sx={{
+          mt: -2,
+        }}>
         {[
-          { text: "Custom Activities", path: "/custom-activities" },
+          { text: "General", path: "/General" },
+          { text: "Team Management", path: "/TeamManagement" },
+          { text: "Roles And Permissions", path: "/RolesAndPermissions" },
+        ].map(({ text, path }) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton
+              onClick={() => handleNavigation(text, path)}
+              sx={{
+                "&:hover": {
+                  backgroundColor: "transparent !important",
+                  color: "blue",
+                },
+                Color: selected === path ? "#e0f7fa" : "transparent", // Change background when selected
+              }}>
+              <ListItemText
+                sx={{
+                  mt: -2.5,
+                  "&:hover": {
+                    backgroundColor: "transparent !important",
+                    color: "blue",
+                  },
+                  color: selected === path ? "blue" : "gray", // Change color when selected
+                  "& .MuiListItemText-primary": {
+                    color: "inherit",
+                    fontSize: "0.75rem", // Adjusted font size
+                  },
+                }}
+                primary={text}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List
+        sx={{
+          mt: 2,
+        }}>
+        {[{ text: "Customizations", path: "/CustomFields" }].map(
+          ({ text, path }) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton
+                onClick={() => handleNavigation(text, path)}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "transparent !important",
+                    color: "blue",
+                  },
+                  Color: selected === path ? "#e0f7fa" : "transparent", // Change background when selected
+                }}>
+                <ListItemText
+                  sx={{
+                    mt: -2.5,
+                    "&:hover": {
+                      backgroundColor: "transparent !important",
+                      color: "blue",
+                    },
+                    color: selected === path ? "black" : "black", // Change color when selected
+                    "& .MuiListItemText-primary": {
+                      color: "inherit",
+                      fontSize: "0.75rem", // Adjusted font size
+                    },
+                  }}
+                  primary={text}
+                />
+              </ListItemButton>
+            </ListItem>
+          )
+        )}
+      </List>
+      <List
+        sx={{
+          mt: -2,
+        }}>
+        {[
+          { text: "Custom Activities", path: "/processing" },
           { text: "Custom Fields", path: "/CustomFields" },
-          { text: "Custom Objects", path: "/custom-objects" },
-          { text: "Shared Fields", path: "/shared-fields" },
-          { text: "Integration Links", path: "/integration-links" },
-          { text: "Scheduling Links", path: "/scheduling-links" },
+          { text: "Custom Objects", path: "/processing" },
+          { text: "Shared Fields", path: "/processing" },
+          { text: "Integration Links", path: "/processing" },
+          { text: "Scheduling Links", path: "/SchedulingLinks" },
           { text: "Status & Pipelines", path: "/StatusAndPipelines" },
         ].map(({ text, path }) => (
           <ListItem key={text} disablePadding>
@@ -198,8 +232,13 @@ export default function PermanentDrawerLeft() {
         ))}
       </List>
       <Divider />
-      <List sx={{ mt: 2 }}>
-        {[{ text: "Communication", path: "/communication" }].map(
+
+      <Divider />
+      <List
+        sx={{
+          mt: 2,
+        }}>
+        {[{ text: "Communications", path: "/PhonesAndVoiceMails" }].map(
           ({ text, path }) => (
             <ListItem key={text} disablePadding>
               <ListItemButton
@@ -207,14 +246,18 @@ export default function PermanentDrawerLeft() {
                 sx={{
                   "&:hover": {
                     backgroundColor: "transparent !important",
+                    color: "blue",
                   },
-                  backgroundColor:
-                    selected === path ? "#e0f7fa" : "transparent", // Change background when selected
+                  Color: selected === path ? "#e0f7fa" : "transparent", // Change background when selected
                 }}>
                 <ListItemText
                   sx={{
                     mt: -2.5,
-                    color: selected === path ? "blue" : "black", // Change color when selected
+                    "&:hover": {
+                      backgroundColor: "transparent !important",
+                      color: "blue",
+                    },
+                    color: selected === path ? "black" : "black", // Change color when selected
                     "& .MuiListItemText-primary": {
                       color: "inherit",
                       fontSize: "0.75rem", // Adjusted font size
@@ -227,50 +270,25 @@ export default function PermanentDrawerLeft() {
           )
         )}
       </List>
-      <Divider />
-      <List sx={{ mt: 2 }}>
-        {["Communication"].map((text) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton
-              sx={{
-                "&:hover": {
-                  backgroundColor: "transparent !important",
-                },
-              }}>
-              <ListItemText
-                sx={{
-                  mt: -2.5,
-                  color: "black",
-                  "& .MuiListItemText-primary": {
-                    color: "inherit",
-                    fontSize: "0.75rem", // Adjusted font size
-                    "&:hover": {
-                      color: "blue",
-                    },
-                  },
-                }}
-                primary={text}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <List sx={{ mt: -2 }}>
+      <List
+        sx={{
+          mt: -2,
+        }}>
         {[
           { text: "Phone & Voicemail", path: "/PhonesAndVoiceMails" },
-          { text: "Dialer", path: "/AccountsAndApps" },
-          { text: "Email", path: "/Developers" },
+          { text: "Dialer", path: "/processing" },
+          { text: "Email", path: "/processing" },
           {
             text: "Shared Fields",
-            path: "/Developers",
+            path: "/processing",
           },
           {
             text: "Templates & Snippets",
-            path: "/Developers",
+            path: "/processing",
           },
           {
             text: "Saved As",
-            path: "/Developers",
+            path: "/processing",
           },
         ].map(({ text, path }) => (
           <ListItem key={text} disablePadding>
@@ -303,38 +321,50 @@ export default function PermanentDrawerLeft() {
         ))}
       </List>
       <Divider />
-      <List sx={{ mt: 2 }}>
-        {["Connect"].map((text) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton
-              sx={{
-                "&:hover": {
-                  backgroundColor: "transparent !important",
-                },
-              }}>
-              <ListItemText
+      <List
+        sx={{
+          mt: 2,
+        }}>
+        {[{ text: "Connect", path: "/AccountsAndApps" }].map(
+          ({ text, path }) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton
+                onClick={() => handleNavigation(text, path)}
                 sx={{
-                  mt: -2.5,
-                  color: "black",
-                  "& .MuiListItemText-primary": {
-                    color: "inherit",
-                    fontSize: "0.75rem", // Adjusted font size
+                  "&:hover": {
+                    backgroundColor: "transparent !important",
+                    color: "blue",
+                  },
+                  Color: selected === path ? "#e0f7fa" : "transparent", // Change background when selected
+                }}>
+                <ListItemText
+                  sx={{
+                    mt: -2.5,
                     "&:hover": {
+                      backgroundColor: "transparent !important",
                       color: "blue",
                     },
-                  },
-                }}
-                primary={text}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
+                    color: selected === path ? "black" : "black", // Change color when selected
+                    "& .MuiListItemText-primary": {
+                      color: "inherit",
+                      fontSize: "0.75rem", // Adjusted font size
+                    },
+                  }}
+                  primary={text}
+                />
+              </ListItemButton>
+            </ListItem>
+          )
+        )}
       </List>
-      <List sx={{ mt: -2 }}>
+      <List
+        sx={{
+          mt: -2,
+        }}>
         {[
-          { text: "Integrations", path: "/Integrations" },
+          { text: "Integrations", path: "/processing" },
           { text: "Accounts & Apps", path: "/AccountsAndApps" },
-          { text: "Developers", path: "/Developers" },
+          { text: "Developers", path: "/processing" },
         ].map(({ text, path }) => (
           <ListItem key={text} disablePadding>
             <ListItemButton
@@ -367,25 +397,32 @@ export default function PermanentDrawerLeft() {
       </List>
 
       <Divider />
-      <List sx={{ mt: 1 }}>
-        {["Billing"].map((text) => (
+      <List
+        sx={{
+          mt: 1,
+        }}>
+        {[{ text: "Billing", path: "/processing" }].map(({ text, path }) => (
           <ListItem key={text} disablePadding>
             <ListItemButton
+              onClick={() => handleNavigation(text, path)}
               sx={{
                 "&:hover": {
                   backgroundColor: "transparent !important",
+                  color: "blue",
                 },
+                Color: selected === path ? "#e0f7fa" : "transparent", // Change background when selected
               }}>
               <ListItemText
                 sx={{
                   mt: -2.5,
-                  color: "black",
+                  "&:hover": {
+                    backgroundColor: "transparent !important",
+                    color: "blue",
+                  },
+                  color: selected === path ? "black" : "black", // Change color when selected
                   "& .MuiListItemText-primary": {
                     color: "inherit",
                     fontSize: "0.75rem", // Adjusted font size
-                    "&:hover": {
-                      color: "blue",
-                    },
                   },
                 }}
                 primary={text}
@@ -394,26 +431,35 @@ export default function PermanentDrawerLeft() {
           </ListItem>
         ))}
       </List>
-      <List sx={{ mt: -2 }}>
-        {["Plan", "Usage"].map((text) => (
+      <List
+        sx={{
+          mt: -2,
+        }}>
+        {[
+          { text: "Plan", path: "/processing" },
+          { text: "Usage", path: "/processing" },
+        ].map(({ text, path }) => (
           <ListItem key={text} disablePadding>
             <ListItemButton
+              onClick={() => handleNavigation(text, path)}
               sx={{
                 "&:hover": {
                   backgroundColor: "transparent !important",
+                  color: "blue",
                 },
+                Color: selected === path ? "#e0f7fa" : "transparent", // Change background when selected
               }}>
               <ListItemText
                 sx={{
                   mt: -2.5,
-                  color: "gray",
-                  fontSize: "0.5rem", // Adjusted font size
+                  "&:hover": {
+                    backgroundColor: "transparent !important",
+                    color: "blue",
+                  },
+                  color: selected === path ? "blue" : "gray", // Change color when selected
                   "& .MuiListItemText-primary": {
                     color: "inherit",
                     fontSize: "0.75rem", // Adjusted font size
-                    "&:hover": {
-                      color: "blue",
-                    },
                   },
                 }}
                 primary={text}

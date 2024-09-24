@@ -5,9 +5,13 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+import ProcessingPage from "./pages/Processing";
+import { GlobalProvider } from "./components/GlobalVar";
 import { ThemeProvider } from "@mui/material/styles";
 import { Auth0Provider } from "@auth0/auth0-react";
 import Login1 from "./pages/login/Login1";
+import SchedulingLinks from "./pages/Settings/SchedulingLinks";
+import RolesAndPermissions from "./pages/Settings/RolesAndPermissions";
 import SignUpForm1 from "./pages/Signup/SignUpForm1";
 import SignUpForm2 from "./pages/Signup/SignUpForm2";
 import SignUpForm3 from "./pages/Signup/SignUpForm3";
@@ -71,7 +75,10 @@ const AppWrapper: React.FC = () => {
         <Route path="/Contacts" element={<Contacts />} />
         <Route path="/AccountsAndApps" element={<AccountsAndApps />} />
         <Route path="/PhonesAndVoiceMails" element={<PhonesAndVoiceMails />} />
+        <Route path="/RolesAndPermissions" element={<RolesAndPermissions />} />
+        <Route path="/SchedulingLinks" element={<SchedulingLinks />} />
         <Route path="/TeamManagement" element={<TeamManagement />} />
+        <Route path="/processing" element={<ProcessingPage />} />
         <Route
           path="/Reports/ActivityOverview"
           element={<ActivityOverView />}
@@ -83,16 +90,18 @@ const AppWrapper: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Auth0Provider
-        domain={import.meta.env.VITE_AUTH0_DOMAIN}
-        clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
-        authorizationParams={{ redirect_uri: window.location.origin }}>
-        <Router>
-          <AppWrapper />
-        </Router>
-      </Auth0Provider>
-    </ThemeProvider>
+    <GlobalProvider>
+      <ThemeProvider theme={theme}>
+        <Auth0Provider
+          domain={import.meta.env.VITE_AUTH0_DOMAIN}
+          clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
+          authorizationParams={{ redirect_uri: window.location.origin }}>
+          <Router>
+            <AppWrapper />
+          </Router>
+        </Auth0Provider>
+      </ThemeProvider>
+    </GlobalProvider>
   );
 };
 

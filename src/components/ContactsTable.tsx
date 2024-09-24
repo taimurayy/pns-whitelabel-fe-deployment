@@ -13,6 +13,7 @@ import {
   Menu,
   MenuItem,
   Checkbox,
+  TextField,
 } from "@mui/material";
 import { useState } from "react";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
@@ -88,6 +89,13 @@ const CustomFeildStatusTable: React.FC = () => {
   const [selectedFields, setSelectedFields] =
     useState<string[]>(availableFields);
 
+  const [limit, setLimit] = useState<number>(5); // Default limit
+  const [displayedLeads, setDisplayedLeads] = useState(Leads.slice(0, limit));
+  const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newLimit = Number(event.target.value);
+    setLimit(newLimit);
+    setDisplayedLeads(Leads.slice(0, newLimit)); // Update displayed leads based on new limit
+  };
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -106,7 +114,16 @@ const CustomFeildStatusTable: React.FC = () => {
   return (
     <Box sx={{ width: "160%" }}>
       <Box sx={{ ml: 1, mt: 0 }}>
-        <IconButton sx={{ color: "black" }} onClick={handleClick}>
+        <TextField
+          label="Contacts"
+          type="number"
+          helperText="Set Contacts Limit"
+          value={limit}
+          onChange={handleLimitChange}
+          inputProps={{ min: 1, max: Leads.length }} // Set min and max limits
+          sx={{ marginRight: 2, mt: 1, mb: 1 }}
+        />
+        <IconButton sx={{ color: "black", mt: 1 }} onClick={handleClick}>
           <AddCircleRoundedIcon sx={{ mr: 2 }} />
           <Typography sx={{ fontSize: "1.5rem", fontWeight: 400 }}>
             Add filter
@@ -147,7 +164,7 @@ const CustomFeildStatusTable: React.FC = () => {
                 {selectedFields.includes("Name") && (
                   <TableCell
                     sx={{
-                      padding: "2px 20px",
+                      padding: "4px 8px",
                       borderRight: "1px solid black",
                       backgroundColor: "#f9f9f9",
                     }}>
@@ -165,34 +182,24 @@ const CustomFeildStatusTable: React.FC = () => {
 
                 <TableCell
                   sx={{
-                    padding: "14px 16px",
+                    padding: "4px 8px",
                     borderRight: "1px solid black",
                     backgroundColor: "#f9f9f9",
-                    paddingLeft: "9px",
                   }}>
-                  <Box display="flex">
-                    <IconButton>
-                      <AddIcCallRoundedIcon />
-                    </IconButton>
-                  </Box>
+                  <AddIcCallRoundedIcon />
                 </TableCell>
                 <TableCell
                   sx={{
-                    padding: "14px 16px",
+                    padding: "4px 8px",
                     borderRight: "1px solid black",
                     backgroundColor: "#f9f9f9",
-                    paddingLeft: "9px",
                   }}>
-                  <Box display="flex">
-                    <IconButton>
-                      <EmailRoundedIcon />
-                    </IconButton>
-                  </Box>
+                  <EmailRoundedIcon />
                 </TableCell>
                 {selectedFields.includes("Title") && (
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       borderRight: "1px solid black",
                       backgroundColor: "#f9f9f9",
                     }}>
@@ -210,7 +217,7 @@ const CustomFeildStatusTable: React.FC = () => {
                 {selectedFields.includes("Lead") && (
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       backgroundColor: "#f9f9f9",
                       borderRight: "1px solid black",
                     }}>
@@ -228,7 +235,7 @@ const CustomFeildStatusTable: React.FC = () => {
                 {selectedFields.includes("LeadUrl") && (
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       backgroundColor: "#f9f9f9",
                       borderRight: "1px solid black",
                     }}>
@@ -246,7 +253,7 @@ const CustomFeildStatusTable: React.FC = () => {
                 {selectedFields.includes("LeadDescription") && (
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       backgroundColor: "#f9f9f9",
                       borderRight: "1px solid black",
                     }}>
@@ -264,7 +271,7 @@ const CustomFeildStatusTable: React.FC = () => {
                 {selectedFields.includes("LeadStatus") && (
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       backgroundColor: "#f9f9f9",
                       borderRight: "1px solid black",
                     }}>
@@ -282,7 +289,7 @@ const CustomFeildStatusTable: React.FC = () => {
                 {selectedFields.includes("LeadUpdated") && (
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       backgroundColor: "#f9f9f9",
                       borderRight: "1px solid black",
                     }}>
@@ -300,7 +307,7 @@ const CustomFeildStatusTable: React.FC = () => {
                 {selectedFields.includes("LeadCreated") && (
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       backgroundColor: "#f9f9f9",
                       borderRight: "1px solid black",
                     }}>
@@ -318,7 +325,7 @@ const CustomFeildStatusTable: React.FC = () => {
                 {selectedFields.includes("LeadCreatedBy") && (
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       backgroundColor: "#f9f9f9",
                       borderRight: "1px solid black",
                     }}>
@@ -336,7 +343,7 @@ const CustomFeildStatusTable: React.FC = () => {
                 {selectedFields.includes("PrimaryAddress") && (
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       backgroundColor: "#f9f9f9",
                     }}>
                     <Box display="flex">
@@ -353,12 +360,12 @@ const CustomFeildStatusTable: React.FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Leads.map((status, index) => (
+              {displayedLeads.map((status, index) => (
                 <TableRow key={index}>
                   {selectedFields.includes("Name") && (
                     <TableCell
                       sx={{
-                        padding: "14px 16px",
+                        padding: "4px 8px",
                         borderRight: "1px solid black",
                         color: "blue",
                       }}>
@@ -367,14 +374,14 @@ const CustomFeildStatusTable: React.FC = () => {
                   )}
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       borderRight: "1px solid black",
                     }}>
                     <AddIcCallRoundedIcon />
                   </TableCell>
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       borderRight: "1px solid black",
                     }}>
                     <EmailRoundedIcon />
@@ -382,7 +389,7 @@ const CustomFeildStatusTable: React.FC = () => {
                   {selectedFields.includes("Title") && (
                     <TableCell
                       sx={{
-                        padding: "14px 16px",
+                        padding: "4px 8px",
                         borderRight: "1px solid black",
                       }}>
                       {status.Title}
@@ -391,7 +398,7 @@ const CustomFeildStatusTable: React.FC = () => {
                   {selectedFields.includes("Lead") && (
                     <TableCell
                       sx={{
-                        padding: "14px 16px",
+                        padding: "4px 8px",
                         borderRight: "1px solid black",
                       }}>
                       {status.Lead}
@@ -400,7 +407,7 @@ const CustomFeildStatusTable: React.FC = () => {
                   {selectedFields.includes("LeadUrl") && (
                     <TableCell
                       sx={{
-                        padding: "14px 16px",
+                        padding: "4px 8px",
                         borderRight: "1px solid black",
                       }}>
                       {status.LeadUrl}
@@ -409,7 +416,7 @@ const CustomFeildStatusTable: React.FC = () => {
                   {selectedFields.includes("LeadDescription") && (
                     <TableCell
                       sx={{
-                        padding: "14px 16px",
+                        padding: "4px 8px",
                         borderRight: "1px solid black",
                       }}>
                       {status.LeadDescription}
@@ -418,7 +425,7 @@ const CustomFeildStatusTable: React.FC = () => {
                   {selectedFields.includes("LeadStatus") && (
                     <TableCell
                       sx={{
-                        padding: "14px 16px",
+                        padding: "4px 8px",
                         borderRight: "1px solid black",
                       }}>
                       {status.LeadStatus}
@@ -427,7 +434,7 @@ const CustomFeildStatusTable: React.FC = () => {
                   {selectedFields.includes("LeadUpdated") && (
                     <TableCell
                       sx={{
-                        padding: "14px 16px",
+                        padding: "4px 8px",
                         borderRight: "1px solid black",
                       }}>
                       {status.LeadUpdated}
@@ -436,7 +443,7 @@ const CustomFeildStatusTable: React.FC = () => {
                   {selectedFields.includes("LeadCreated") && (
                     <TableCell
                       sx={{
-                        padding: "14px 16px",
+                        padding: "4px 8px",
                         borderRight: "1px solid black",
                       }}>
                       {status.LeadCreated}
@@ -445,7 +452,7 @@ const CustomFeildStatusTable: React.FC = () => {
                   {selectedFields.includes("LeadCreatedBy") && (
                     <TableCell
                       sx={{
-                        padding: "14px 16px",
+                        padding: "4px 8px",
                         borderRight: "1px solid black",
                       }}>
                       {status.LeadCreatedBy}
@@ -454,7 +461,7 @@ const CustomFeildStatusTable: React.FC = () => {
                   {selectedFields.includes("PrimaryAddress") && (
                     <TableCell
                       sx={{
-                        padding: "14px 16px",
+                        padding: "4px 8px",
                       }}>
                       {status.PrimaryAddress}
                     </TableCell>

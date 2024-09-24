@@ -57,28 +57,34 @@ const PhonesandMails = () => {
         </Typography>
       </Box>
       <Divider sx={{ mb: -2, ml: -10 }} />
-      <Box>
-        <CustomCard
-          title="Personal Numbers"
-          buttonLabel="Add"
-          Icon={PhoneCallbackRoundedIcon}
-          headings={["No Phone Numbers"]}
-          description="Rent us through us or bring us own."
-        />
-      </Box>
-      <Box>
-        <CustomCard
-          title="Group Numbers"
-          buttonLabel="Add"
-          Icon={PeopleOutlineRoundedIcon}
-          headings={["No Group Numbers"]}
-          description="Incoming calls ring for all members.
-          Rent us through us or bring us own."
-        />
-        <Typography sx={{ fontSize: "1rem", mt: -2, mb: 1 }} color="primary">
-          Learn about more group numbers
-        </Typography>
-      </Box>
+      {selected === "phonenumbers" && (
+        <>
+          <Box>
+            <CustomCard
+              title="Personal Numbers"
+              buttonLabel="Add"
+              Icon={PhoneCallbackRoundedIcon}
+              headings={["No Phone Numbers"]}
+              description="Rent us through us or bring us own."
+            />
+          </Box>
+          <Box>
+            <CustomCard
+              title="Group Numbers"
+              buttonLabel="Add"
+              Icon={PeopleOutlineRoundedIcon}
+              headings={["No Group Numbers"]}
+              description="Incoming calls ring for all members. Rent us through us or bring us own."
+            />
+            <Typography
+              sx={{ fontSize: "1rem", mt: -2, mb: 1 }}
+              color="primary">
+              Learn about more group numbers
+            </Typography>
+          </Box>
+        </>
+      )}
+
       <Divider />
       <Box sx={{ width: "40%" }}>
         <Typography sx={{ fontSize: "2rem", mt: 2 }}>

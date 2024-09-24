@@ -31,6 +31,7 @@ import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import ReportsMenu from "./ReportsMenu";
 import BasicDatePicker from "./DatePicker";
+import { useGlobalContext } from "./GlobalVar";
 
 interface TopNavbarProps {
   selectedHeading: string;
@@ -116,6 +117,7 @@ const compareOptions = [
 
 const TopNavbar: React.FC<TopNavbarProps> = ({ selectedHeading }) => {
   const location = useLocation();
+  const { collapsed } = useGlobalContext();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [leadAnchorEl, setLeadAnchorEl] = useState<null | HTMLElement>(null);
   const [compareAnchorEl, setCompareAnchorEl] = useState<null | HTMLElement>(
@@ -124,6 +126,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ selectedHeading }) => {
 
   useEffect(() => {
     // Extract the last part of the URL after the last '/'
+
     console.log(selectedHeading);
     const pathName = location.pathname.split("/").pop() || "";
 
@@ -131,6 +134,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ selectedHeading }) => {
     const formattedHeading = pathName
       .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
       .replace(/^./, (str) => str.toUpperCase()); // Capitalize the first letter
+    console.log(formattedHeading);
     if (formattedHeading == " Opportunities") {
       setSelectedItem(" Sales Pipeline");
     }
@@ -139,7 +143,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ selectedHeading }) => {
     } else {
       setSelectedItem(formattedHeading);
     } // Update the heading state
-  }, [location.pathname]);
+  }, [location.pathname, selectedHeading]);
 
   const [helpAnchorEl, setHelpAnchorEl] = useState<null | HTMLElement>(null);
   const handleLeadClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -168,8 +172,9 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ selectedHeading }) => {
     <AppBar
       position="fixed"
       sx={{
-        width: `calc(100% - 280px)`, // Adjust width based on sidebar width
-        ml: "280px", // Adjust margin left based on sidebar width
+        width: collapsed ? `calc(100% - 70px)` : `calc(100% - 280px)`, // Dynamically adjust width
+        // Adjust margin left based on sidebar width
+        ml: collapsed ? "70px" : "280px",
         backgroundColor: "#fff", // White background
         color: "#000", // Black text color for contrast
         boxShadow: "none",

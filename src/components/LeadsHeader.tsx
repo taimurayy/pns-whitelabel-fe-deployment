@@ -12,6 +12,8 @@ import {
   TableHead,
   Chip,
 } from "@mui/material";
+import AddLeadModal from "./AddLeadModal";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
@@ -20,27 +22,37 @@ import { SplitscreenRounded } from "@mui/icons-material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import GroupIcon from "@mui/icons-material/Group";
 import KeyboardDoubleArrowUpRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowUpRounded";
-const Leads = [
-  {
-    Name: "Close (Example lead)",
-    Contacts: "Close Sales Team +3",
-    Status: "Potientital",
-  },
-  {
-    Name: "Bluth (Example lead)",
-    Contacts: "Close Sales Team +6",
-    Status: "Potientital",
-  },
-  {
-    Name: "Close (Example lead)",
-    Contacts: "Wayne Sales Team +8",
-    Status: "Qualified",
-  },
-];
 
 const CustomFeildStatusTable: React.FC = () => {
   const navigate = useNavigate();
-
+  const [openModal, setOpenModal] = useState(false);
+  const [Leads, setLeads] = useState([
+    {
+      Name: "Close (Example lead)",
+      Contacts: "Close Sales Team +3",
+      Status: "Potential",
+    },
+    {
+      Name: "Bluth (Example lead)",
+      Contacts: "Close Sales Team +6",
+      Status: "Potential",
+    },
+    {
+      Name: "Close (Example lead)",
+      Contacts: "Wayne Sales Team +8",
+      Status: "Qualified",
+    },
+  ]);
+  const addLead = (newLead: { companyName: string; contactName: string }) => {
+    setLeads((prevLeads) => [
+      ...prevLeads,
+      {
+        Name: newLead.companyName,
+        Contacts: `${newLead.contactName} Team`,
+        Status: "New", // You can set the default status
+      },
+    ]);
+  };
   const handleNavigate = () => {
     navigate("/ImportLeads"); // Define the correct path to the Import Leads page
   };
@@ -77,9 +89,14 @@ const CustomFeildStatusTable: React.FC = () => {
       </Box>
       <Box display="flex" gap={2} sx={{ ml: 2 }}>
         <Chip
-          label="Add"
+          label="Import Lead"
           sx={{ backgroundColor: "lightgray", mt: 0.5 }}
           onClick={handleNavigate}
+        />
+        <Chip
+          label="Add Lead"
+          sx={{ backgroundColor: "lightgray", mt: 0.5 }}
+          onClick={() => setOpenModal(true)} // Open the modal
         />
 
         <IconButton>
@@ -94,6 +111,11 @@ const CustomFeildStatusTable: React.FC = () => {
             Add Group
           </Typography>
         </IconButton>
+        <AddLeadModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onAddLead={addLead}
+        />
       </Box>
       <Box
         mb={4}
@@ -108,7 +130,7 @@ const CustomFeildStatusTable: React.FC = () => {
               <TableRow>
                 <TableCell
                   sx={{
-                    padding: "2px 20px",
+                    padding: "4px 8px",
                     borderRight: "1px solid black",
                     backgroundColor: "#f9f9f9",
                   }}>
@@ -125,35 +147,27 @@ const CustomFeildStatusTable: React.FC = () => {
                 <TableCell
                   align="left"
                   sx={{
-                    padding: "14px 16px",
+                    padding: "4px 8px",
                     borderRight: "1px solid black",
                     backgroundColor: "#f9f9f9",
                     width: "10px",
                   }}>
-                  <Box display="flex">
-                    <IconButton>
-                      <AddIcCallRoundedIcon />
-                    </IconButton>
-                  </Box>
+                  <AddIcCallRoundedIcon />
                 </TableCell>
                 <TableCell
                   align="left"
                   sx={{
-                    padding: "14px 16px",
+                    padding: "4px 8px",
                     borderRight: "1px solid black",
                     backgroundColor: "#f9f9f9",
                     width: "10px",
                   }}>
-                  <Box display="flex">
-                    <IconButton>
-                      <EmailRoundedIcon />
-                    </IconButton>
-                  </Box>
+                  <EmailRoundedIcon />
                 </TableCell>
 
                 <TableCell
                   sx={{
-                    padding: "14px 16px",
+                    padding: "4px 8px",
                     borderRight: "1px solid black",
                     backgroundColor: "#f9f9f9",
                   }}>
@@ -169,7 +183,7 @@ const CustomFeildStatusTable: React.FC = () => {
                 </TableCell>
                 <TableCell
                   sx={{
-                    padding: "14px 16px",
+                    padding: "4px 8px",
                     backgroundColor: "#f9f9f9",
                   }}>
                   <Box display="flex">
@@ -189,17 +203,17 @@ const CustomFeildStatusTable: React.FC = () => {
                 <TableRow key={index}>
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       borderRight: "1px solid black",
                       color: "blue",
                     }}>
-                    <SplitscreenRounded sx={{ color: "black", mt: 1 }} />
+                    <SplitscreenRounded sx={{ color: "black" }} />
                     {status.Name}
                   </TableCell>
                   <TableCell
                     align="center"
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       borderRight: "1px solid black",
                     }}>
                     <AddIcCallRoundedIcon />
@@ -207,7 +221,7 @@ const CustomFeildStatusTable: React.FC = () => {
                   <TableCell
                     align="center"
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       borderRight: "1px solid black",
                     }}>
                     <EmailRoundedIcon />
@@ -215,14 +229,14 @@ const CustomFeildStatusTable: React.FC = () => {
 
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                       borderRight: "1px solid black",
                     }}>
                     {status.Contacts}
                   </TableCell>
                   <TableCell
                     sx={{
-                      padding: "14px 16px",
+                      padding: "4px 8px",
                     }}>
                     {status.Status}
                   </TableCell>

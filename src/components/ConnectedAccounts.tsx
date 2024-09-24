@@ -12,15 +12,29 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+import EmailIcon from "@mui/icons-material/Email";
 import { Google as GoogleIcon } from "@mui/icons-material";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import MicrosoftIcon from "@mui/icons-material/Work";
+import ZoomIcon from "@mui/icons-material/VideoCall";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+
+interface Account {
+  value: string;
+  email: string;
+}
 
 const ConnectedAccounts = () => {
-  const [selected, setSelected] = useState("connected");
+  const [selected, setSelected] = useState<"connected" | "authorized">(
+    "connected"
+  );
   const [openModal, setOpenModal] = useState(false);
-  const [selectedAccount, setSelectedAccount] = useState("");
+  const [selectedAccount, setSelectedAccount] = useState<string>("");
+  const [connectedAccounts, setConnectedAccounts] = useState<Account[]>([
+    { value: "google", email: "email@example.com" }, // Default account
+  ]);
 
-  const handleSelect = (option: string) => {
+  const handleSelect = (option: "connected" | "authorized") => {
     setSelected(option);
   };
 
@@ -33,9 +47,13 @@ const ConnectedAccounts = () => {
   };
 
   const handleAddAccount = () => {
-    // Add your logic to connect the selected account here
-    console.log(`Adding account: ${selectedAccount}`);
-    handleCloseModal();
+    if (selectedAccount) {
+      setConnectedAccounts((prev) => [
+        ...prev,
+        { value: selectedAccount, email: "email@example.com" }, // Replace with actual email input if needed
+      ]);
+      handleCloseModal();
+    }
   };
 
   return (
@@ -75,7 +93,7 @@ const ConnectedAccounts = () => {
         </Typography>
         <IconButton
           color="primary"
-          sx={{ ml: "auto", mr: 2 }}
+          sx={{ ml: "auto", mr: 14 }}
           onClick={handleOpenModal}>
           <AddCircleRoundedIcon />
         </IconButton>
@@ -88,21 +106,40 @@ const ConnectedAccounts = () => {
           padding: "16px",
           width: "1000px",
         }}>
-        {selected === "connected" && (
-          <Box sx={{ marginTop: "4px" }}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <GoogleIcon sx={{ color: "#DB4437", fontSize: "40px" }} />
-              <Box>
-                <Typography variant="body1" sx={{ marginLeft: "8px" }}>
-                  Google
-                </Typography>
-                <Typography variant="body2" sx={{ marginLeft: "8px" }}>
-                  email@example.com
-                </Typography>
+        {selected === "connected" &&
+          connectedAccounts.map((account, index) => (
+            <Box key={index} sx={{ marginTop: "16px", marginBottom: "16px" }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                {account.value === "google" && (
+                  <GoogleIcon sx={{ fontSize: "40px" }} />
+                )}
+                {account.value === "microsoft" && (
+                  <MicrosoftIcon sx={{ fontSize: "40px" }} />
+                )}
+                {account.value === "zoom" && (
+                  <ZoomIcon sx={{ fontSize: "40px" }} />
+                )}
+                {account.value === "calendly" && (
+                  <CalendarTodayIcon sx={{ fontSize: "40px" }} />
+                )}
+                {account.value === "custom" && (
+                  <EmailIcon sx={{ fontSize: "40px" }} />
+                )}
+                <Box>
+                  <Typography variant="body1" sx={{ marginLeft: "8px" }}>
+                    {account.value.charAt(0).toUpperCase() +
+                      account.value.slice(1)}
+                  </Typography>
+                  <Typography variant="body2" sx={{ marginLeft: "8px" }}>
+                    {account.email}
+                  </Typography>
+                </Box>
               </Box>
+              {index < connectedAccounts.length - 1 && (
+                <Divider sx={{ marginY: "8px" }} />
+              )}
             </Box>
-          </Box>
-        )}
+          ))}
       </Box>
 
       {/* Modal for Adding Accounts */}
@@ -118,71 +155,50 @@ const ConnectedAccounts = () => {
             <RadioGroup
               value={selectedAccount}
               onChange={(e) => setSelectedAccount(e.target.value)}
-              sx={{ display: "flex", flexDirection: "column" }} // Column layout
-            >
+              sx={{ display: "flex", flexDirection: "column" }}>
               {[
                 {
                   value: "google",
                   label: "Google",
-                  icon: (
-                    <GoogleIcon sx={{ color: "#DB4437", marginRight: "8px" }} />
-                  ),
+                  icon: <GoogleIcon sx={{ marginRight: "8px" }} />,
                 },
-                // Add other icons here
                 {
                   value: "microsoft",
                   label: "Microsoft",
-                  icon: (
-                    <GoogleIcon sx={{ color: "#DB4437", marginRight: "8px" }} />
-                  ),
-                  // icon: <YourMicrosoftIcon sx={{ marginRight: "8px" }} />,
+                  icon: <MicrosoftIcon sx={{ marginRight: "8px" }} />,
                 },
                 {
                   value: "zoom",
                   label: "Zoom",
-                  icon: (
-                    <GoogleIcon sx={{ color: "#DB4437", marginRight: "8px" }} />
-                  ),
-                  // icon: <YourZoomIcon sx={{ marginRight: "8px" }} />,
+                  icon: <ZoomIcon sx={{ marginRight: "8px" }} />,
                 },
                 {
                   value: "calendly",
                   label: "Calendly",
-                  icon: (
-                    <GoogleIcon sx={{ color: "#DB4437", marginRight: "8px" }} />
-                  ),
-                  // icon: <YourCalendlyIcon sx={{ marginRight: "8px" }} />,
+                  icon: <CalendarTodayIcon sx={{ marginRight: "8px" }} />,
                 },
                 {
                   value: "custom",
                   label: "Custom Email",
-                  icon: (
-                    <GoogleIcon sx={{ color: "#DB4437", marginRight: "8px" }} />
-                  ),
-                  // icon: <YourCustomIcon sx={{ marginRight: "8px" }} />,
+                  icon: <EmailIcon sx={{ marginRight: "8px" }} />,
                 },
               ].map(({ value, label, icon }) => (
-                <Box>
-                  <Box
-                    key={value}
-                    display="flex"
-                    alignItems="center"
-                    sx={{ mb: 1 }}>
-                    {icon} {/* Icon on the left */}
+                <Box key={value}>
+                  <Box display="flex" alignItems="center" sx={{ mb: 1 }}>
+                    {icon}
                     <Box
                       sx={{
                         flexGrow: 1,
                         display: "flex",
                         alignItems: "center",
                       }}>
-                      <Typography>{label}</Typography> {/* Label */}
+                      <Typography>{label}</Typography>
                     </Box>
                     <Radio
                       value={value}
                       checked={selectedAccount === value}
                       onChange={() => setSelectedAccount(value)}
-                    />{" "}
-                    {/* Radio button */}
+                    />
                   </Box>
                   <Divider sx={{ ml: -4, width: "110%" }} />
                 </Box>
@@ -198,8 +214,20 @@ const ConnectedAccounts = () => {
             sx={{ backgroundColor: "white", borderRadius: 2, color: "black" }}
             onClick={handleAddAccount}
             disabled={!selectedAccount}>
-            {selectedAccount && (
-              <GoogleIcon sx={{ color: "#DB4437", marginRight: "8px" }} />
+            {selectedAccount === "google" && (
+              <GoogleIcon sx={{ marginRight: "8px" }} />
+            )}
+            {selectedAccount === "microsoft" && (
+              <MicrosoftIcon sx={{ marginRight: "8px" }} />
+            )}
+            {selectedAccount === "zoom" && (
+              <ZoomIcon sx={{ marginRight: "8px" }} />
+            )}
+            {selectedAccount === "calendly" && (
+              <CalendarTodayIcon sx={{ marginRight: "8px" }} />
+            )}
+            {selectedAccount === "custom" && (
+              <EmailIcon sx={{ marginRight: "8px" }} />
             )}
             Connect with{" "}
             {selectedAccount.charAt(0).toUpperCase() + selectedAccount.slice(1)}{" "}

@@ -542,6 +542,7 @@ import {
   Box,
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
 import {
   SubdirectoryArrowRight as SubdirectoryArrowRightIcon,
   KeyboardTabRounded as KeyboardTabRoundedIcon,
@@ -564,8 +565,10 @@ import {
   WatchLater as WatchLaterIcon,
   EventAvailable as EventAvailableIcon,
 } from "@mui/icons-material";
+
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import DragIndicatorRoundedIcon from "@mui/icons-material/DragIndicatorRounded";
+import { useGlobalContext } from "./GlobalVar";
 interface SidebarProps {
   onSelectionChange: (heading: string) => void;
 }
@@ -574,8 +577,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const drawerWidth = 280;
+
   const [openReports, setOpenReports] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const { collapsed, setCollapsed } = useGlobalContext();
 
   useEffect(() => {
     const pathName = location.pathname.split("/").pop() || "";
@@ -599,6 +604,11 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
     color: selectedItem === heading ? "yellow" : "#797979",
   });
 
+  const handleCollapseToggle = () => {
+    setCollapsed(!collapsed); // Toggle the collapse state
+    const reducedwidth = 70;
+    localStorage.setItem("width", reducedwidth.toString());
+  };
   const getIconColor = (heading: string) =>
     selectedItem === heading ? "yellow" : "#fff";
 
@@ -613,6 +623,21 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
       Reports: "/Reports/ActivityOverview",
       Leads: "/Leads",
       Contacts: "/Contacts",
+      Conversations: "/processing",
+      Workflows: "/processing",
+      "Activity Comparison": "/processing",
+      "Opportunity Funnels": "/processing",
+      "Status Changes": "/processing",
+      Explorer: "/processing",
+      "Sent Emails": "/processing",
+      Integrations: "/processing",
+      "Support & Faqs": "/processing",
+      "Untouched Leads": "/processing",
+      "Leads to Call": "/processing",
+      "Leads Never Emailed": "/processing",
+      "Emails opened this week": "/processing",
+      "No contact > 30 days": "/processing",
+      "Opportunity Follow up": "/processing",
       logout: "/",
     };
 
@@ -630,10 +655,10 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
     <Drawer
       variant="permanent"
       sx={{
-        width: drawerWidth,
+        width: collapsed ? 70 : drawerWidth,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: drawerWidth,
+          width: collapsed ? 70 : drawerWidth,
           boxSizing: "border-box",
           backgroundColor: "#111",
           color: "#fff",
@@ -643,18 +668,29 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
       }}>
       {/* User Profile Section */}
       <Box sx={{ padding: 2, display: "flex", alignItems: "center" }}>
-        <Avatar sx={{ bgcolor: "#d32f2f", marginRight: 2 }}>BH</Avatar>
-        <Box>
-          <Typography variant="body1" sx={{ fontWeight: 500 }}>
-            Brock Hudgens
-          </Typography>
-          <Typography variant="body2" sx={{ color: "#aaa" }}>
-            HRDLS
-          </Typography>
-        </Box>
-        <IconButton sx={{ marginLeft: "auto", color: "#fff" }}>
-          <ExpandMoreIcon />
-        </IconButton>
+        <Avatar
+          sx={{
+            bgcolor: "#d32f2f",
+            marginRight: collapsed ? 0 : 2,
+            marginLeft: collapsed ? -0.5 : 0,
+          }}>
+          BH
+        </Avatar>
+        {!collapsed && (
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 500 }}>
+              Brock Hudgens
+            </Typography>
+            <Typography variant="body2" sx={{ color: "#aaa" }}>
+              HRDLS
+            </Typography>
+          </Box>
+        )}
+        {!collapsed && (
+          <IconButton sx={{ marginLeft: "auto", color: "#fff" }}>
+            <ExpandMoreIcon />
+          </IconButton>
+        )}
       </Box>
 
       {/* Main Sections */}
@@ -715,12 +751,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
                   icon
                 )}
               </ListItemIcon>
-              <ListItemText
-                primary={text}
-                primaryTypographyProps={{
-                  sx: { fontSize: "1rem", color: getIconColor(text) },
-                }}
-              />
+              {!collapsed && (
+                <ListItemText
+                  primary={text}
+                  primaryTypographyProps={{
+                    sx: { fontSize: "1rem", color: getIconColor(text) },
+                  }}
+                />
+              )}
               {actionIcon && (
                 <IconButton sx={{ color: "#fff" }}>{actionIcon}</IconButton>
               )}
@@ -739,10 +777,12 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
             <ListItemIcon>
               <ReportIcon sx={{ color: "white" }} />
             </ListItemIcon>
-            <ListItemText
-              primary="Reports"
-              sx={{ color: getIconColor("Reports") }}
-            />
+            {!collapsed && (
+              <ListItemText
+                primary="Reports"
+                sx={{ color: getIconColor("Reports") }}
+              />
+            )}
             <ListItemIcon>
               <ArrowDropDownRoundedIcon
                 sx={{ color: "white", ml: "auto", mr: 1 }}
@@ -768,12 +808,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
                       sx={{ color: getIconColor(item) }}
                     />
                   </ListItemIcon>
-                  <ListItemText
-                    primary={item}
-                    primaryTypographyProps={{
-                      color: selectedItem === item ? "yellow" : "#797979",
-                    }}
-                  />
+                  {!collapsed && (
+                    <ListItemText
+                      primary={item}
+                      primaryTypographyProps={{
+                        color: selectedItem === item ? "yellow" : "#797979",
+                      }}
+                    />
+                  )}
                 </ListItemButton>
               ))}
             </List>
@@ -783,16 +825,20 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
         {/* Smart Views Section */}
         <List sx={{ mb: 10 }}>
           <ListItemButton sx={{ marginBottom: -2 }}>
-            <ListItemText
-              primary="SMART VIEWS"
-              onClick={() => handleMenuItemClick("Smart Leads")}
-              primaryTypographyProps={{
-                sx: { color: "#aaa" },
-              }}
-            />
-            <IconButton>
-              <SearchIcon sx={{ color: "#fff" }} />
-            </IconButton>
+            {!collapsed && (
+              <ListItemText
+                primary="SMART VIEWS"
+                onClick={() => handleMenuItemClick("Smart Leads")}
+                primaryTypographyProps={{
+                  sx: { color: "#aaa" },
+                }}
+              />
+            )}{" "}
+            {!collapsed && (
+              <IconButton>
+                <SearchIcon sx={{ color: "#fff" }} />
+              </IconButton>
+            )}
           </ListItemButton>
           {[
             {
@@ -824,15 +870,25 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
               ),
             },
           ].map(({ text, icon }) => (
-            <ListItemButton key={text} sx={{ marginBottom: -2 }}>
+            <ListItemButton
+              key={text}
+              onClick={() => handleMenuItemClick(text)}
+              sx={{ marginBottom: -2 }}>
               <ListItemIcon sx={{ mr: -3 }}>
-                <DragIndicatorRoundedIcon sx={{ color: "white" }} />
+                {!collapsed && (
+                  <DragIndicatorRoundedIcon sx={{ color: "white" }} />
+                )}
               </ListItemIcon>
-              <ListItemIcon sx={{ mr: -3 }}>{icon}</ListItemIcon>
-              <ListItemText
-                primary={text}
-                sx={{ color: selectedItem === text ? "yellow" : "#797979" }}
-              />
+              <ListItemIcon
+                sx={{ mr: collapsed ? 0 : -3, ml: collapsed ? -4 : 0 }}>
+                {icon}
+              </ListItemIcon>
+              {!collapsed && (
+                <ListItemText
+                  primary={text}
+                  sx={{ color: selectedItem === text ? "yellow" : "#797979" }}
+                />
+              )}
             </ListItemButton>
           ))}
         </List>
@@ -846,7 +902,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
             <ListItemIcon>
               <SupportAgentIcon sx={{ color: "#fff" }} />
             </ListItemIcon>
-            <ListItemText primary="Support & FAQs" />
+            {!collapsed && <ListItemText primary="Support & FAQs" />}
             <IconButton>
               <OpenInNewIcon sx={{ color: "#fff" }} />
             </IconButton>
@@ -857,7 +913,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
             <ListItemIcon>
               <PowerIcon sx={{ color: "#fff" }} />
             </ListItemIcon>
-            <ListItemText primary="Integrations" />
+            {!collapsed && <ListItemText primary="Integrations" />}
           </ListItemButton>
           <ListItemButton
             sx={{
@@ -868,30 +924,35 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
             <ListItemIcon>
               <SettingsIcon sx={{ color: getIconColor("Settings") }} />
             </ListItemIcon>
-            <ListItemText
-              primary="Settings"
-              sx={{ color: getIconColor("Settings") }}
-            />
+            {!collapsed && (
+              <ListItemText
+                primary="Settings"
+                sx={{ color: getIconColor("Settings") }}
+              />
+            )}
           </ListItemButton>
         </List>
         <Divider sx={{ backgroundColor: "white", marginTop: 2 }} />
         <List>
           {" "}
-          <ListItemButton>
-            <ListItemText primary="Collapse" />
+          <ListItemButton onClick={() => handleCollapseToggle()}>
+            {!collapsed && <ListItemText primary="Collapse" />}
             <ListItemIcon>
               {" "}
               <KeyboardTabRoundedIcon
                 sx={{
                   color: "#fff",
                   transform: "scaleX(-1)",
-                  marginLeft: "24px",
+                  marginLeft: collapsed ? "2px" : "24px",
                 }}
               />
             </ListItemIcon>
           </ListItemButton>
           <ListItemButton onClick={() => handleMenuItemClick("logout")}>
-            <ListItemText primary="Logout" />
+            <ListItemIcon sx={{ color: "white" }}>
+              <LogoutIcon />
+            </ListItemIcon>
+            {!collapsed && <ListItemText primary="Logout" />}
           </ListItemButton>
         </List>
       </Box>

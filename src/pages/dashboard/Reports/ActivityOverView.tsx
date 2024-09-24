@@ -13,7 +13,8 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-
+import AddIcon from "@mui/icons-material/Add";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Layout from "../../../components/Layout";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 const ActivityOverView: React.FC = () => {
@@ -53,11 +54,41 @@ const ActivityOverView: React.FC = () => {
             maxWidth: "calc(100% - 320px)", // Ensure space for leaderboard card
             overflow: "auto", // Ensure cards can be scrolled if needed
           }}>
+          <Card sx={{ width: 200, height: 200 }}>
+            <CardContent>
+              <Typography
+                align="left"
+                sx={{ color: "#3781b8", fontSize: "2rem" }}>
+                0.5$
+              </Typography>
+              <Box display="flex">
+                <Typography sx={{ fontWeight: 600 }}>Inbound Leads</Typography>
+                <ArrowDropDownIcon />
+              </Box>
+
+              <Typography sx={{ fontWeight: 400, color: "grey" }}>
+                WON
+              </Typography>
+              {/* Add card content here */}
+            </CardContent>
+          </Card>
           {cards.map((card, index) => (
             <Card key={index} sx={{ width: 200, height: 200 }}>
               <CardContent>
-                <Typography align="left" variant="h6">
-                  Card {card}
+                <Typography
+                  align="left"
+                  sx={{ color: "#3781b8", fontSize: "2rem" }}>
+                  {card}s
+                </Typography>
+                <Box display="flex">
+                  <Typography sx={{ fontWeight: 600 }}>
+                    Created Leads
+                  </Typography>
+                  <ArrowDropDownIcon />
+                </Box>
+
+                <Typography sx={{ fontWeight: 400, color: "grey" }}>
+                  WON
                 </Typography>
                 {/* Add card content here */}
               </CardContent>
@@ -81,9 +112,12 @@ const ActivityOverView: React.FC = () => {
             }}
             onClick={addCard}>
             <CardContent>
-              <Typography align="center" variant="h6" color="textSecondary">
-                Add Card
-              </Typography>
+              <Box display="flex">
+                <AddIcon sx={{ mt: 0.2 }} />
+                <Typography align="center" variant="h6" color="textSecondary">
+                  Add a tile
+                </Typography>
+              </Box>
             </CardContent>
           </Card>
         </Box>
@@ -99,10 +133,20 @@ const ActivityOverView: React.FC = () => {
                 aria-controls={open ? "menu" : undefined}
                 aria-haspopup="true"
                 onClick={handleClick}
-                sx={{ marginBottom: 2, color: "black" }}>
+                sx={{ marginBottom: 2, color: "black", ml: -1 }}>
                 Opportunities
                 <ArrowDropDownRoundedIcon />
               </Button>
+              <Typography
+                sx={{
+                  fontWeight: 400,
+                  color: "grey",
+                  mr: 4,
+                  mt: -3,
+                  fontSize: "0.8rem",
+                }}>
+                WON
+              </Typography>
               <Menu
                 id="menu"
                 anchorEl={anchorEl}
