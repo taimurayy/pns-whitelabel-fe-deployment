@@ -620,6 +620,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
       "Activity Overview": "/Reports/ActivityOverview",
       Opportunities: "/Opportunities",
       Settings: "/Settings",
+      Inbox:"/processing",
       Reports: "/Reports/ActivityOverview",
       Leads: "/Leads",
       Contacts: "/Contacts",
