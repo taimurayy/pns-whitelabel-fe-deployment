@@ -12,7 +12,8 @@ const SchedulingLinksComp: React.FC = () => {
         mt: 5,
         border: "1px solid",
         borderRadius: "8px",
-        width: "1100px",
+        width: "100%",
+        ml: -2,
         height: "500px",
         p: 3,
       }}>

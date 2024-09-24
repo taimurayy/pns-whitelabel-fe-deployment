@@ -543,6 +543,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useMediaQuery, useTheme } from "@mui/material";
 import {
   SubdirectoryArrowRight as SubdirectoryArrowRightIcon,
   KeyboardTabRounded as KeyboardTabRoundedIcon,
@@ -574,6 +575,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
   const navigate = useNavigate();
   const drawerWidth = 280;
@@ -581,7 +584,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
   const [openReports, setOpenReports] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const { collapsed, setCollapsed } = useGlobalContext();
-
+  useEffect(() => {
+    // Set collapsed to true if on a small screen
+    if (isSmallScreen) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false); // or any other condition to set it to false
+    }
+  }, [isSmallScreen, setCollapsed]);
   useEffect(() => {
     const pathName = location.pathname.split("/").pop() || "";
     const formattedHeading = pathName
@@ -618,6 +628,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
 
     const routes: Record<string, string> = {
       "Activity Overview": "/Reports/ActivityOverview",
+      Inbox: "/processing",
       Opportunities: "/Opportunities",
       Settings: "/Settings",
       Reports: "/Reports/ActivityOverview",

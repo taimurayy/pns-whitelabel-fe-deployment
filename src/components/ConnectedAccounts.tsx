@@ -57,7 +57,7 @@ const ConnectedAccounts = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       <Box display="flex" sx={{ mb: 2 }}>
         <Typography
           variant="h6"

@@ -112,7 +112,7 @@ const CustomFeildStatusTable: React.FC = () => {
   };
 
   return (
-    <Box sx={{ width: "160%" }}>
+    <Box sx={{ width: "1800px" }}>
       <Box sx={{ ml: 1, mt: 0 }}>
         <TextField
           label="Contacts"
@@ -157,7 +157,7 @@ const CustomFeildStatusTable: React.FC = () => {
           border: "1px solid black",
           borderRadius: 1,
         }}>
-        <TableContainer sx={{ overflow: "hidden" }}>
+        <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
@@ -480,7 +480,7 @@ const ContactsTable: React.FC = () => {
   return (
     <Box p={4}>
       <Grid container spacing={2}>
-        <Grid item xs={10}>
+        <Grid item xs={12} sx={{ overflow: "scroll" }}>
           <CustomFeildStatusTable />
         </Grid>
       </Grid>

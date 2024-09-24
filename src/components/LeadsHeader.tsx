@@ -72,7 +72,7 @@ const CustomFeildStatusTable: React.FC = () => {
           </IconButton>
         </Box>
       </Box>
-      <Box display="flex" sx={{ ml: 2 }}>
+      <Box display="flex" gap={2} sx={{ ml: 2 }}>
         <Typography sx={{ color: "black", mr: 1 }}>Where</Typography>
         <Typography sx={{ color: "grey" }}>There</Typography>
 

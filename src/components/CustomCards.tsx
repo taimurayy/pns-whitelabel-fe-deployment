@@ -104,7 +104,13 @@ const CustomCard: React.FC<CustomCardProps> = ({
   };
 
   return (
-    <Box sx={{ mt: 3, mb: 3, width: "30%" }}>
+    <Box
+      sx={{
+        mt: 3,
+        mb: 3,
+        minWidth: "300px",
+        maxWidth: "300px",
+      }}>
       <Box display="flex">
         <Typography variant="h6" sx={{ fontWeight: 200 }}>
           {title}

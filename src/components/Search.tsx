@@ -54,7 +54,7 @@ export default function SearchComponent() {
             ),
           }}
           sx={{ backgroundColor: "#F1F1F1" }}
-          style={{ width: "600%" }} // Ensures the field takes full width
+          style={{ width: "300%" }} // Ensures the field takes full width
         />
       )}
     />

@@ -103,7 +103,15 @@ export default function General() {
                 label="Organization Name"
                 helperText={errors.general}
                 type="text"
-                sx={{ marginBottom: 2, width: "30%" }}
+                sx={{
+                  marginBottom: 2,
+                  width: {
+                    lg: "20%",
+                    xl: "20%",
+                    md: "40%",
+                    sm: "60%",
+                  },
+                }}
               />
             </Box>
             {/* Currency Field */}
@@ -114,7 +122,15 @@ export default function General() {
                 label="Currency"
                 helperText={errors.currency}
                 type="number"
-                sx={{ marginBottom: 2, width: "30%" }}
+                sx={{
+                  marginBottom: 2,
+                  width: {
+                    lg: "20%",
+                    xl: "20%",
+                    md: "40%",
+                    sm: "60%",
+                  },
+                }}
                 startAdornment="USD - US DOLLAR ($)"
               />
             </Box>

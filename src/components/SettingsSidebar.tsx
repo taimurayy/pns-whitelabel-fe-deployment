@@ -7,10 +7,14 @@ import ListItemText from "@mui/material/ListItemText";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useGlobalContext } from "./GlobalVar";
+import { useMediaQuery, useTheme } from "@mui/material";
 const drawerWidth = 240;
 
 export default function PermanentDrawerLeft() {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md")); // Adjust the breakpoint as needed
+
   const { collapsed } = useGlobalContext();
 
   // Check the current path to set the initial selected state
@@ -24,19 +28,20 @@ export default function PermanentDrawerLeft() {
   return (
     <Drawer
       sx={{
-        width: drawerWidth,
+        width: isSmallScreen ? 150 : drawerWidth,
         "& .MuiDrawer-paper": {
-          width: drawerWidth,
+          width: isSmallScreen ? 150 : drawerWidth,
           boxSizing: "border-box",
         },
       }}
       PaperProps={{
         sx: {
           marginLeft: collapsed ? "70px" : "280px",
-          marginTop: "210px",
+          marginTop: isSmallScreen ? "2px" : "210px",
           zIndex: 2,
-          height: "750px",
+          height: "1050px",
           overflow: "auto",
+          position: "absolute",
         },
       }}
       variant="permanent"

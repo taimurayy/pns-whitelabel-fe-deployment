@@ -43,7 +43,7 @@ const opportunityStatuses = [
 
 const LeadStatusesTable: React.FC = () => {
   return (
-    <Box sx={{ width: "50%" }}>
+    <Box sx={{ width: "500px" }}>
       <Typography variant="h6">Lead Statuses</Typography>
       <Typography variant="body2" sx={{ color: "#7c7c7c" }} gutterBottom>
         Lead Statuses represent a Lead's current relationship to your company.
@@ -120,7 +120,7 @@ const LeadStatusesTable: React.FC = () => {
 
 const OpportunityStatusesTable: React.FC = () => {
   return (
-    <Box sx={{ width: "50%" }}>
+    <Box sx={{ width: "500px" }}>
       <Typography variant="h6">Opportunity Pipelines & Statuses</Typography>
       <Typography variant="body2" sx={{ color: "#7c7c7c" }} gutterBottom>
         Opportunity Statuses describe each stage of a deal and should align with
