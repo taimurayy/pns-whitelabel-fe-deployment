@@ -917,7 +917,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
               <ListItemIcon
                 sx={{
                   mr: collapsed ? 0 : -3,
-                  ml: collapsed ? -4 : 0,
+                  ml: collapsed ? -3 : 0,
                   mb: collapsed ? 1 : 0,
                 }}>
                 {icon}
