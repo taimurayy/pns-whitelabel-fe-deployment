@@ -611,16 +611,18 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
   }, [location.pathname, onSelectionChange]);
 
   const getMenuItemStyles = (heading: string) => ({
-    color: selectedItem === heading ? "yellow" : "#797979",
+    color: selectedItem === heading ? "white" : "white",
+    backgroundColor: selectedItem === heading ? "#2e2e2e" : "#191919",
   });
 
   const handleCollapseToggle = () => {
     setCollapsed(!collapsed); // Toggle the collapse state
     const reducedwidth = 70;
+
     localStorage.setItem("width", reducedwidth.toString());
   };
   const getIconColor = (heading: string) =>
-    selectedItem === heading ? "yellow" : "#fff";
+    selectedItem === heading ? "white" : "#fff";
 
   const handleMenuItemClick = (heading: string) => {
     setSelectedItem(heading);
@@ -659,7 +661,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
 
   const handleToggleReports = () => {
     setOpenReports(!openReports);
-    handleMenuItemClick("Reports");
+    setSelectedItem("Reports");
+    onSelectionChange("Reports");
   };
 
   return (
@@ -740,48 +743,58 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
               icon: <MailIcon sx={{ color: getIconColor("Conversations") }} />,
             },
           ].map(({ text, icon, badgeContent, actionIcon }) => (
-            <ListItemButton
-              key={text}
-              sx={{
-                marginBottom: -2,
-                ...getMenuItemStyles(text),
-              }}
-              onClick={() => handleMenuItemClick(text)}>
-              <ListItemIcon>
-                {badgeContent ? (
-                  <Badge
-                    badgeContent={badgeContent}
-                    color="primary"
-                    sx={{
-                      ".MuiBadge-dot": { backgroundColor: "green" },
-                      ".MuiBadge-standard": { backgroundColor: "green" },
-                    }}>
-                    {icon}
-                  </Badge>
-                ) : (
-                  icon
+            <Box sx={{ p: 0, mr: 2, ml: 2, mb: 0.5 }}>
+              <ListItemButton
+                key={text}
+                sx={{
+                  ...getMenuItemStyles(text),
+                  padding: "0px 1px", // Reduce padding for less area
+                  borderRadius: "10px", // Smaller border radius
+                  "&:hover": {
+                    backgroundColor: "#2e2e2e", // Disable background color on hover
+                  },
+                }}
+                onClick={() => handleMenuItemClick(text)}>
+                <ListItemIcon>
+                  {badgeContent ? (
+                    <Badge
+                      badgeContent={badgeContent}
+                      color="primary"
+                      sx={{
+                        ".MuiBadge-dot": { backgroundColor: "green" },
+                        ".MuiBadge-standard": { backgroundColor: "green" },
+                      }}>
+                      {icon}
+                    </Badge>
+                  ) : (
+                    icon
+                  )}
+                </ListItemIcon>
+                {!collapsed && (
+                  <ListItemText
+                    primary={text}
+                    primaryTypographyProps={{
+                      sx: { fontSize: "1rem", color: getIconColor(text) },
+                    }}
+                  />
                 )}
-              </ListItemIcon>
-              {!collapsed && (
-                <ListItemText
-                  primary={text}
-                  primaryTypographyProps={{
-                    sx: { fontSize: "1rem", color: getIconColor(text) },
-                  }}
-                />
-              )}
-              {actionIcon && (
-                <IconButton sx={{ color: "#fff" }}>{actionIcon}</IconButton>
-              )}
-            </ListItemButton>
+                {actionIcon && (
+                  <IconButton sx={{ color: "#fff" }}>{actionIcon}</IconButton>
+                )}
+              </ListItemButton>
+            </Box>
           ))}
         </List>
         {/* Reports Section */}
-        <Box>
+        <Box sx={{ p: 0, mr: 2, ml: 2, mt: -1 }}>
           <ListItemButton
             sx={{
-              marginBottom: -2,
-
+              mb: 1,
+              padding: "0px 1px", // Reduce padding for less area
+              borderRadius: "10px", // Smaller border radius
+              "&:hover": {
+                backgroundColor: "#2e2e2e",
+              },
               ...getMenuItemStyles("Reports"),
             }}
             onClick={handleToggleReports}>
@@ -801,7 +814,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
             </ListItemIcon>
           </ListItemButton>
           <Collapse in={openReports} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding sx={{ marginLeft: "-15px" }}>
+            <List component="div" disablePadding>
               {[
                 "Activity Overview",
                 "Activity Comparison",
@@ -810,24 +823,35 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
                 "Explorer",
                 "Sent Emails",
               ].map((item) => (
-                <ListItemButton
-                  key={item}
-                  sx={{ pl: 4, marginBottom: -2, ...getMenuItemStyles(item) }}
-                  onClick={() => handleMenuItemClick(item)}>
-                  <ListItemIcon>
-                    <SubdirectoryArrowRightIcon
-                      sx={{ color: getIconColor(item) }}
-                    />
-                  </ListItemIcon>
-                  {!collapsed && (
-                    <ListItemText
-                      primary={item}
-                      primaryTypographyProps={{
-                        color: selectedItem === item ? "yellow" : "#797979",
-                      }}
-                    />
-                  )}
-                </ListItemButton>
+                <Box sx={{ mb: 0.5 }}>
+                  <ListItemButton
+                    key={item}
+                    sx={{
+                      padding: "0px 1px", // Further reduce padding for less area
+                      borderRadius: "10px", // Smaller border radius
+                      margin: "0", // Reduce padding for less area
+                      // Smaller border radius
+                      "&:hover": {
+                        backgroundColor: "#2e2e2e",
+                      },
+                      ...getMenuItemStyles(item),
+                    }}
+                    onClick={() => handleMenuItemClick(item)}>
+                    <ListItemIcon>
+                      <SubdirectoryArrowRightIcon
+                        sx={{ color: getIconColor(item) }}
+                      />
+                    </ListItemIcon>
+                    {!collapsed && (
+                      <ListItemText
+                        primary={item}
+                        primaryTypographyProps={{
+                          color: selectedItem === item ? "white" : "gray",
+                        }}
+                      />
+                    )}
+                  </ListItemButton>
+                </Box>
               ))}
             </List>
           </Collapse>
@@ -885,13 +909,17 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
               key={text}
               onClick={() => handleMenuItemClick(text)}
               sx={{ marginBottom: -2 }}>
-              <ListItemIcon sx={{ mr: -3 }}>
+              <ListItemIcon sx={{ mr: -3, ml: -1 }}>
                 {!collapsed && (
                   <DragIndicatorRoundedIcon sx={{ color: "white" }} />
                 )}
               </ListItemIcon>
               <ListItemIcon
-                sx={{ mr: collapsed ? 0 : -3, ml: collapsed ? -4 : 0 }}>
+                sx={{
+                  mr: collapsed ? 0 : -3,
+                  ml: collapsed ? -4 : 0,
+                  mb: collapsed ? 1 : 0,
+                }}>
                 {icon}
               </ListItemIcon>
               {!collapsed && (
@@ -906,65 +934,107 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
         {/* Settings Section */}
 
         <Divider sx={{ backgroundColor: "white", mt: -2, mb: 2 }} />
-        <List sx={{ mt: -3 }}>
-          <ListItemButton
-            sx={{ marginBottom: -2 }}
-            onClick={() => handleMenuItemClick("Support & Faqs")}>
-            <ListItemIcon>
-              <SupportAgentIcon sx={{ color: "#fff" }} />
-            </ListItemIcon>
-            {!collapsed && <ListItemText primary="Support & FAQs" />}
-            <IconButton>
-              <OpenInNewIcon sx={{ color: "#fff" }} />
-            </IconButton>
-          </ListItemButton>
-          <ListItemButton
-            sx={{ marginBottom: -2 }}
-            onClick={() => handleMenuItemClick("Integrations")}>
-            <ListItemIcon>
-              <PowerIcon sx={{ color: "#fff" }} />
-            </ListItemIcon>
-            {!collapsed && <ListItemText primary="Integrations" />}
-          </ListItemButton>
-          <ListItemButton
-            sx={{
-              marginBottom: -2,
-              ...getMenuItemStyles("Settings"),
-            }}
-            onClick={() => handleMenuItemClick("Settings")}>
-            <ListItemIcon>
-              <SettingsIcon sx={{ color: getIconColor("Settings") }} />
-            </ListItemIcon>
-            {!collapsed && (
-              <ListItemText
-                primary="Settings"
-                sx={{ color: getIconColor("Settings") }}
-              />
-            )}
-          </ListItemButton>
+        <List sx={{ mt: -2, backgroundColor: "#191919" }}>
+          <Box sx={{ p: 0, mr: 2, ml: 2, mb: 0.5 }}>
+            <ListItemButton
+              sx={{
+                padding: "0px 1px", // Reduce padding for less area
+                borderRadius: "10px", // Smaller border radius
+                "&:hover": {
+                  backgroundColor: "#2e2e2e",
+                },
+              }}
+              onClick={() => handleMenuItemClick("Support & Faqs")}>
+              <ListItemIcon>
+                <SupportAgentIcon sx={{ color: "#fff" }} />
+              </ListItemIcon>
+              {!collapsed && <ListItemText primary="Support & FAQs" />}
+              <IconButton>
+                <OpenInNewIcon sx={{ color: "#fff" }} />
+              </IconButton>
+            </ListItemButton>
+          </Box>
+          <Box sx={{ p: 0, mr: 2, ml: 2, mb: 0.5 }}>
+            <ListItemButton
+              sx={{
+                padding: "0px 1px", // Reduce padding for less area
+                borderRadius: "10px", // Smaller border radius
+                "&:hover": {
+                  backgroundColor: "#2e2e2e",
+                },
+              }}
+              onClick={() => handleMenuItemClick("Integrations")}>
+              <ListItemIcon>
+                <PowerIcon sx={{ color: "#fff" }} />
+              </ListItemIcon>
+              {!collapsed && <ListItemText primary="Integrations" />}
+            </ListItemButton>
+          </Box>
+          <Box sx={{ p: 0, mr: 2, ml: 2, mb: 0.5 }}>
+            <ListItemButton
+              sx={{
+                padding: "0px 1px", // Reduce padding for less area
+                borderRadius: "10px", // Smaller border radius
+                "&:hover": {
+                  backgroundColor: "#2e2e2e",
+                },
+                ...getMenuItemStyles("Settings"),
+              }}
+              onClick={() => handleMenuItemClick("Settings")}>
+              <ListItemIcon>
+                <SettingsIcon sx={{ color: getIconColor("Settings") }} />
+              </ListItemIcon>
+              {!collapsed && (
+                <ListItemText
+                  primary="Settings"
+                  sx={{ color: getIconColor("Settings") }}
+                />
+              )}
+            </ListItemButton>
+          </Box>
         </List>
         <Divider sx={{ backgroundColor: "white", marginTop: 2 }} />
         <List>
           {" "}
-          <ListItemButton onClick={() => handleCollapseToggle()}>
-            {!collapsed && <ListItemText primary="Collapse" />}
-            <ListItemIcon>
-              {" "}
-              <KeyboardTabRoundedIcon
-                sx={{
-                  color: "#fff",
-                  transform: "scaleX(-1)",
-                  marginLeft: collapsed ? "2px" : "24px",
-                }}
-              />
-            </ListItemIcon>
-          </ListItemButton>
-          <ListItemButton onClick={() => handleMenuItemClick("logout")}>
-            <ListItemIcon sx={{ color: "white" }}>
-              <LogoutIcon />
-            </ListItemIcon>
-            {!collapsed && <ListItemText primary="Logout" />}
-          </ListItemButton>
+          <Box sx={{ p: 0, mr: 2, ml: 2, mb: 0.5 }}>
+            <ListItemButton
+              onClick={() => handleCollapseToggle()}
+              sx={{
+                padding: "0px 1px", // Reduce padding for less area
+                borderRadius: "10px", // Smaller border radius
+                "&:hover": {
+                  backgroundColor: "#2e2e2e",
+                },
+              }}>
+              {!collapsed && <ListItemText primary="Collapse" />}
+              <ListItemIcon>
+                {" "}
+                <KeyboardTabRoundedIcon
+                  sx={{
+                    color: "#fff",
+                    transform: "scaleX(-1)",
+                    marginLeft: collapsed ? "2px" : "24px",
+                  }}
+                />
+              </ListItemIcon>
+            </ListItemButton>
+          </Box>
+          <Box sx={{ p: 0, mr: 2, ml: 2, mb: 0.5 }}>
+            <ListItemButton
+              onClick={() => handleMenuItemClick("logout")}
+              sx={{
+                padding: "0px 1px", // Reduce padding for less area
+                borderRadius: "10px", // Smaller border radius
+                "&:hover": {
+                  backgroundColor: "#2e2e2e",
+                },
+              }}>
+              <ListItemIcon sx={{ color: "white" }}>
+                <LogoutIcon />
+              </ListItemIcon>
+              {!collapsed && <ListItemText primary="Logout" />}
+            </ListItemButton>
+          </Box>
         </List>
       </Box>
     </Drawer>
