@@ -55,10 +55,28 @@ export default function PermanentDrawerLeft() {
           { text: "Accounts", path: "/processing" },
           { text: "Memberships", path: "/processing" },
         ].map(({ text, path }) => (
-          <ListItem key={text} disablePadding>
+          <ListItem
+            key={text}
+            disablePadding
+            sx={{
+              "&:focus": {
+                backgroundColor: "transparent !important", // Prevent background change on focus
+              },
+              "&:focus-visible": {
+                backgroundColor: "transparent !important", // Custom focus-visible background
+                // Optional outline for accessibility
+              },
+            }}>
             <ListItemButton
               onClick={() => handleNavigation(text, path)}
               sx={{
+                "&:focus": {
+                  backgroundColor: "transparent !important", // Prevent background change on focus
+                },
+                "&:focus-visible": {
+                  backgroundColor: "transparent !important", // Custom focus-visible background
+                  // Optional outline for accessibility
+                },
                 "&:hover": {
                   backgroundColor: "transparent !important",
                   color: "blue",
@@ -68,6 +86,13 @@ export default function PermanentDrawerLeft() {
               <ListItemText
                 sx={{
                   mt: -2.5,
+                  "&:focus": {
+                    backgroundColor: "transparent !important", // Prevent background change on focus
+                  },
+                  "&:focus-visible": {
+                    backgroundColor: "transparent !important", // Custom focus-visible background
+                    // Optional outline for accessibility
+                  },
                   "&:hover": {
                     backgroundColor: "transparent !important",
                     color: "blue",
