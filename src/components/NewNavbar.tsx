@@ -909,7 +909,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
               key={text}
               onClick={() => handleMenuItemClick(text)}
               sx={{ marginBottom: -2 }}>
-              <ListItemIcon sx={{ mr: -3, ml: -1 }}>
+              <ListItemIcon sx={{ mr: -3, ml: 0 }}>
                 {!collapsed && (
                   <DragIndicatorRoundedIcon sx={{ color: "white" }} />
                 )}
@@ -917,7 +917,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onSelectionChange }) => {
               <ListItemIcon
                 sx={{
                   mr: collapsed ? 0 : -3,
-                  ml: collapsed ? -3 : 0,
+                  ml: collapsed ? -4 : 0,
                   mb: collapsed ? 1 : 0,
                 }}>
                 {icon}
