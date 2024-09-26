@@ -6,10 +6,13 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 
 interface CommentBoxProps {
   onCommentSubmit: (comment: string) => void;
-  onCancel: (comment: string) => void;
+  onCancel: () => void; // Ensure onCancel is included in the props
 }
 
-const CommentBox: React.FC<CommentBoxProps> = ({ onCommentSubmit }) => {
+const CommentBox: React.FC<CommentBoxProps> = ({
+  onCommentSubmit,
+  onCancel,
+}) => {
   const [comment, setComment] = useState("");
 
   const wrapSelectedText = (before: string, after: string) => {
@@ -33,6 +36,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ onCommentSubmit }) => {
   const handleItalicClick = () => {
     wrapSelectedText("_", "_");
   };
+
   const handleAttachFileClick = () => {
     // Placeholder for attach functionality
     console.log("Attach file clicked");
@@ -45,9 +49,9 @@ const CommentBox: React.FC<CommentBoxProps> = ({ onCommentSubmit }) => {
         backgroundColor: "white",
         padding: 2,
         borderRadius: 2,
-        width: "100%",
+        width: "90%",
         marginTop: 1,
-        zIndex: 3,
+        zIndex: 4,
       }}>
       <Box display="flex">
         <Avatar
@@ -59,6 +63,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ onCommentSubmit }) => {
           BH
         </Avatar>
         <TextField
+          id="comment-box" // Ensure the textarea has the correct id
           fullWidth
           multiline
           rows={4}
@@ -98,14 +103,17 @@ const CommentBox: React.FC<CommentBoxProps> = ({ onCommentSubmit }) => {
           <AttachFileIcon />
         </IconButton>
       </Box>
-      <Box display="flex" sx={{ marginLeft: 15 }}>
-        <Button variant="contained" onClick={() => onCommentSubmit(comment)}>
+      <Box display="flex">
+        <Button variant="contained" onClick={onCancel} sx={{ ml: "auto" }}>
           Cancel
         </Button>
         <Button
           sx={{ marginLeft: 2 }}
           variant="contained"
-          onClick={() => onCommentSubmit(comment)}>
+          onClick={() => {
+            onCommentSubmit(comment);
+            setComment(""); // Clear comment input after submission
+          }}>
           Post
         </Button>
       </Box>

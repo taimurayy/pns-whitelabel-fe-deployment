@@ -5,6 +5,8 @@ import {
   Routes,
   useLocation,
 } from "react-router-dom";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import ProcessingPage from "./pages/Processing";
 import { GlobalProvider } from "./components/GlobalVar";
 import { ThemeProvider } from "@mui/material/styles";
@@ -90,18 +92,20 @@ const AppWrapper: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <GlobalProvider>
-      <ThemeProvider theme={theme}>
-        <Auth0Provider
-          domain={import.meta.env.VITE_AUTH0_DOMAIN}
-          clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
-          authorizationParams={{ redirect_uri: window.location.origin }}>
-          <Router>
-            <AppWrapper />
-          </Router>
-        </Auth0Provider>
-      </ThemeProvider>
-    </GlobalProvider>
+    <DndProvider backend={HTML5Backend}>
+      <GlobalProvider>
+        <ThemeProvider theme={theme}>
+          <Auth0Provider
+            domain={import.meta.env.VITE_AUTH0_DOMAIN}
+            clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
+            authorizationParams={{ redirect_uri: window.location.origin }}>
+            <Router>
+              <AppWrapper />
+            </Router>
+          </Auth0Provider>
+        </ThemeProvider>
+      </GlobalProvider>
+    </DndProvider>
   );
 };
 

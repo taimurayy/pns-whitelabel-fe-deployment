@@ -7,9 +7,13 @@ import TopNavbar from "./TopNavbar";
 import { useMediaQuery, useTheme } from "@mui/material";
 interface LayoutProps {
   children: React.ReactNode;
+  differentBg?: boolean;
 }
 
-export default function Layout({ children }: LayoutProps): React.JSX.Element {
+export default function Layout({
+  children,
+  differentBg = false,
+}: LayoutProps): React.JSX.Element {
   const [selectedHeading, setSelectedHeading] = useState("Dashboard");
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md")); // Adjust the breakpoint as needed
@@ -39,7 +43,13 @@ export default function Layout({ children }: LayoutProps): React.JSX.Element {
         }}>
         <Sidebar onSelectionChange={handleSelectionChange} />
 
-        <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <Box
+          sx={{
+            background: differentBg ? "#f8f8f8" : "inherit",
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+          }}>
           <Container
             maxWidth="xl"
             sx={{ py: 3, marginTop: 26, mt: isSmallScreen ? 2 : 26 }}>
