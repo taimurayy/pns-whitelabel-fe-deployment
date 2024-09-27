@@ -14,6 +14,7 @@ import DemoIcon from "@mui/icons-material/AccountCircle"; // Replace with approp
 import LiveIcon from "@mui/icons-material/LiveTv";
 import { useState } from "react";
 import ClientForm from "./ClientForm";
+import { useNavigate } from "react-router-dom";
 interface CardFeildProps {
   username: string; // Define the prop type
 }
@@ -22,12 +23,15 @@ const CardFeild: React.FC<CardFeildProps> = ({ username }) => {
   const handleOpenmodal = () => setOpenmodal(true);
   const handleClosemodal = () => setOpenmodal(false);
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
-
+  const navigate = useNavigate();
   const handleCardClick = (cardType: string) => {
     setSelectedCard(cardType);
   };
   const handleBackClick = () => {
     setSelectedCard(null);
+  };
+  const handleclient = () => {
+    navigate("/client");
   };
   const style = {
     position: "absolute",
@@ -63,22 +67,41 @@ const CardFeild: React.FC<CardFeildProps> = ({ username }) => {
         <Typography variant="subtitle1" gutterBottom>
           Welcome to the dashboard.
         </Typography>
-        <Button
-          variant="contained"
-          onClick={handleOpenmodal}
-          color="primary"
-          sx={{
-            maxWidth: "100%",
-            width: {
-              xs: "50%",
-              sm: "100%",
-              md: "100%",
-              lg: "100%",
-              xl: "100%",
-            },
-          }}>
-          + Create Client
-        </Button>
+        <Box display="flex">
+          <Button
+            variant="contained"
+            onClick={handleOpenmodal}
+            color="primary"
+            sx={{
+              mr: 2,
+              maxWidth: "100%",
+              width: {
+                xs: "50%",
+                sm: "100%",
+                md: "100%",
+                lg: "100%",
+                xl: "100%",
+              },
+            }}>
+            + Create Client
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleclient}
+            color="primary"
+            sx={{
+              maxWidth: "100%",
+              width: {
+                xs: "50%",
+                sm: "100%",
+                md: "100%",
+                lg: "100%",
+                xl: "100%",
+              },
+            }}>
+            View Client Dashboard
+          </Button>
+        </Box>
         <Modal
           keepMounted
           open={openmodal}

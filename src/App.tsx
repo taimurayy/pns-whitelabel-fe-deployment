@@ -43,6 +43,7 @@ import Importlead from "./pages/dashboard/ImportLeads";
 import AccountsAndApps from "./pages/Settings/AccountsAndApps";
 import Contacts from "./pages/dashboard/Contacts";
 import TeamManagement from "./pages/Settings/TeamManagement";
+import ClientPage from "./pages/Client/Client";
 const AppWrapper: React.FC = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
@@ -81,6 +82,7 @@ const AppWrapper: React.FC = () => {
         <Route path="/SchedulingLinks" element={<SchedulingLinks />} />
         <Route path="/TeamManagement" element={<TeamManagement />} />
         <Route path="/processing" element={<ProcessingPage />} />
+        <Route path="/Client" element={<ClientPage />} />
         <Route
           path="/Reports/ActivityOverview"
           element={<ActivityOverView />}
